@@ -1,0 +1,46 @@
+language: go
+
+go:
+  - 1.13.x
+
+before_install:
+  - go get -v golang.org/x/lint/golint
+  - export DISPLAY=:99.0
+
+jobs:
+  include:
+    - stage: lint and test
+      os: linux
+      addons:
+        apt:
+          packages:
+            - libgl1-mesa-dev
+            - xorg-dev
+            - libasound2-dev
+      services:
+        - xvfb
+      script:
+        - golint ./...
+        - go vet ./...
+        - go test -v -cover ./...
+    - stage: build for windows and linux
+      script:
+        - mkdir release
+        - CGO_ENABLED=1 GOOS=windows GOARCH=amd64 go build -o release/kuronan-dash_windows_amd64.exe
+        - CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -o release/kuronan-dash_linux_amd64
+    - stage: build for macOS
+      os: osx
+      osx_image: xcode11.3
+      script: 
+        - mkdir release
+        - CGO_ENABLED=1 go build -o release/kuronan-dash_macOS_amd64
+
+deploy:
+  provider: releases
+  api_key:
+    secure: "JdkaIiSz69RPEKXXes34yvnVeBQHO7+r3ngT0wRXqvbWtUPbSIvtpx16lBN7wlRtQTs7W6b2nRTE8iv24pH+rxhKC8SBaSuwGKkBqF4s7uEH+fMX+NGIBA0Ev+kG+w/zy6qhHfdNgfBugU5RYVA3vqP/uuhUz4xYDnhXbxfw5G39WvrHDBJw/s5BAUpxUEBy6e+EMJO2CaU4QWAxUlZ+bogY6N9DWVdXlj/XBJChzIiS8Ipv7OKxlcv7ZyL5j+75jNFCbw7u+qCSKG7ZzC2Ent+CZ5d3O8CuN5v0zFm9/3L/wQn7eVzxIwvtFEYRd1XAvROv400YQ7gqvQ8R7XNtNfxTz3g27hVx3B44pb/dhRhndu16WSPHJQWrCwJMgSKl5100e652dg/AEhRTrbPMgHPvacnAo+eAstL6dkShiD9wTlQV6URHUKwZPAAJt/O4+dpyXZVHCQvi8A6sezmdsK7vh3k92QN/0xxZS9BOJOAIpz/3DwBOPT/17bCVm9v76MEfD/llQ6lXPQ386ozdZq27Gzr4nzKkdlSvCqYYu49ip8Bdp97gAbvIQ+D1SvJ0rdlIFiyCq2ZC+lxNhAUoEoObCufccQ1yMIF+OqQ1qS/+Ayr78wgHpO41xAQpisNhi+9zRt75xGaCIw8QKOCGEquPLorfRWmdkeS3Sw/872U="
+  cleanup: false
+  file_glob: true
+  file: release/*
+  on:
+    tags: true 
