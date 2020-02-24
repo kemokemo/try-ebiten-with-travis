@@ -3,6 +3,16 @@ language: go
 go:
   - 1.13.x
 
+addons:
+  apt:
+    packages:
+      - libgl1-mesa-dev
+      - xorg-dev
+      - libasound2-dev
+
+services:
+  - xvfb
+
 before_install:
   - go get -v golang.org/x/lint/golint
   - export DISPLAY=:99.0
@@ -11,14 +21,6 @@ jobs:
   include:
     - stage: lint and test
       os: linux
-      addons:
-        apt:
-          packages:
-            - libgl1-mesa-dev
-            - xorg-dev
-            - libasound2-dev
-      services:
-        - xvfb
       script:
         - golint ./...
         - go vet ./...
