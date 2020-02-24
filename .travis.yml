@@ -31,16 +31,14 @@ jobs:
     script:
     - mkdir release
     - CGO_ENABLED=1 go build -o release/kuronan-dash_macOS_amd64
-  - stage: deploy to the GitHub release
-    before_install: skip
-    install: skip
-    deploy:
-      provider: releases
-      skip_cleanup: true
-      api_key:
-        secure: XxZBWakGpFq6bTJMifNXBNRoG8GwcFx88mjdbpt537tStCZXQKS0kxMJ8Q0ma1ET0ciTz1ZFNb8hJyejJfwkGJ83LY3hvxwTo8+okKoB44CZiASwJw9w+x7NS65hzkMiyoqiUhWcd8lyc9ghCsu9/7yjiYH0kmogOYuMjZsNuXlaE+EZ8xuzceNfxQ1nJpt4loHWojoHNaNF7aSSTnsdfsPKQX7F2gFsR/eX5kIblJz8iiQLvMNnbmqOxjsIL+VBf/Qa2JEFrp3BmKNltZnQfU6UOTZXh0dENzFyzdGZi9Yy/hWbfvQnc5HVX/nOFM/9jAym9x5hyXfiIuWrqOWwjYlBVQMQLXjHVWuFWpyq8fbQl1J2Sc4AtRppgIkpp6W3hYomLZpZ51dSOUljcF6eYjy1LEs6ZFbg0tHcQ8l/RpgIf7VOknJrlD/a0bCn3/NRmX1X5Q2+8s4hWBjKFxZMvo2T3ZefmTT73X4Sj71G20buFc6dp7jcufRy3SX7lMrw2ZZllLFAwILvyHHTZ7Xk/g/tao9mPVPUzMvGBB3L/+j50yJkQXniU5Gd1PGx3dOP6az9v+/yCIgik8MgqJV2H8Ng8MhjBuwm0GxqMrkVojGosMOZipKDurbuUsT5G2b04SLoeJugV2jmuB+s9xHyLInf9bb/lfuknLW9WI5UtOU=
-      file_glob: true
-      file: release/*
-      on:
-        tags: true
-        repo: kemokemo/try-ebiten-with-travis
+
+deploy:
+  provider: releases
+  skip_cleanup: true
+  api_key:
+    secure: XxZBWakGpFq6bTJMifNXBNRoG8GwcFx88mjdbpt537tStCZXQKS0kxMJ8Q0ma1ET0ciTz1ZFNb8hJyejJfwkGJ83LY3hvxwTo8+okKoB44CZiASwJw9w+x7NS65hzkMiyoqiUhWcd8lyc9ghCsu9/7yjiYH0kmogOYuMjZsNuXlaE+EZ8xuzceNfxQ1nJpt4loHWojoHNaNF7aSSTnsdfsPKQX7F2gFsR/eX5kIblJz8iiQLvMNnbmqOxjsIL+VBf/Qa2JEFrp3BmKNltZnQfU6UOTZXh0dENzFyzdGZi9Yy/hWbfvQnc5HVX/nOFM/9jAym9x5hyXfiIuWrqOWwjYlBVQMQLXjHVWuFWpyq8fbQl1J2Sc4AtRppgIkpp6W3hYomLZpZ51dSOUljcF6eYjy1LEs6ZFbg0tHcQ8l/RpgIf7VOknJrlD/a0bCn3/NRmX1X5Q2+8s4hWBjKFxZMvo2T3ZefmTT73X4Sj71G20buFc6dp7jcufRy3SX7lMrw2ZZllLFAwILvyHHTZ7Xk/g/tao9mPVPUzMvGBB3L/+j50yJkQXniU5Gd1PGx3dOP6az9v+/yCIgik8MgqJV2H8Ng8MhjBuwm0GxqMrkVojGosMOZipKDurbuUsT5G2b04SLoeJugV2jmuB+s9xHyLInf9bb/lfuknLW9WI5UtOU=
+  file_glob: true
+  file: release/*
+  on:
+    tags: true
+    repo: kemokemo/try-ebiten-with-travis
