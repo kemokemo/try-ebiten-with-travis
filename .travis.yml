@@ -32,6 +32,8 @@ jobs:
     - mkdir release
     - CGO_ENABLED=1 go build -o release/kuronan-dash_macOS_amd64
   - stage: deploy to the GitHub release
+    before_install: skip
+    install: skip
     deploy:
       provider: releases
       api_key:
